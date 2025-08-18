@@ -1,4 +1,4 @@
-package dev.dvhstn.workfromhere.spaces;
+package dev.dvhstn.workfromhere.spaces.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
