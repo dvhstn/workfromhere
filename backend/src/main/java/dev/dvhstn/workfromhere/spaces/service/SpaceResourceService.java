@@ -1,5 +1,6 @@
 package dev.dvhstn.workfromhere.spaces.service;
 
+import dev.dvhstn.workfromhere.spaces.exception.SpaceResourceException;
 import dev.dvhstn.workfromhere.spaces.model.SpaceResource;
 import dev.dvhstn.workfromhere.spaces.repository.SpaceResourceRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,9 @@ public class SpaceResourceService {
     }
 
     public SpaceResource getSpaceById(Long id) {
-        return spaceResourceRepository.findById(id).orElse(null);
+        return spaceResourceRepository
+                .findById(id)
+                .orElseThrow(() -> new SpaceResourceException("Space with id: " + id + " does not exist"));
     }
 
     public SpaceResource createSpace(SpaceResource spaceResource) {
@@ -29,7 +32,9 @@ public class SpaceResourceService {
     }
 
     public void updateSpace(Long id, SpaceResource updatedResource) {
-        SpaceResource resourceToUpdate = spaceResourceRepository.findById(id).orElse(null);
+        SpaceResource resourceToUpdate = spaceResourceRepository
+                .findById(id)
+                .orElseThrow(() -> new SpaceResourceException("Space with id: " + id + " does not exist"));
 
         updateSpaceResource(resourceToUpdate, updatedResource);
 
@@ -37,7 +42,9 @@ public class SpaceResourceService {
     }
 
     public void deleteSpaceById(Long id) {
-        SpaceResource resourceToDelete = spaceResourceRepository.findById(id).orElse(null);
+        SpaceResource resourceToDelete = spaceResourceRepository
+                .findById(id)
+                .orElseThrow(() -> new SpaceResourceException("Space with id: " + id + " does not exist"));
 
         if (Objects.nonNull(resourceToDelete)) {
             spaceResourceRepository.delete(resourceToDelete);

@@ -1,0 +1,18 @@
+package dev.dvhstn.workfromhere.exceptions;
+
+import dev.dvhstn.workfromhere.spaces.exception.SpaceResourceException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(SpaceResourceException.class)
+    public ResponseEntity<String> handleSpaceResourceNotFoundException(SpaceResourceException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+}
