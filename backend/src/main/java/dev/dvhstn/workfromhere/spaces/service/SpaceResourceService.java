@@ -32,19 +32,16 @@ public class SpaceResourceService {
     }
 
     public void updateSpace(Long id, SpaceResource updatedResource) {
-        SpaceResource resourceToUpdate = spaceResourceRepository
-                .findById(id)
-                .orElseThrow(() -> new SpaceResourceException("Space with id: " + id + " does not exist"));
+        SpaceResource resourceToUpdate = getSpaceById(id);
 
-        updateSpaceResource(resourceToUpdate, updatedResource);
-
-        spaceResourceRepository.save(resourceToUpdate);
+        if (Objects.nonNull(resourceToUpdate)) {
+            updateSpaceResource(resourceToUpdate, updatedResource);
+            spaceResourceRepository.save(resourceToUpdate);
+        }
     }
 
     public void deleteSpaceById(Long id) {
-        SpaceResource resourceToDelete = spaceResourceRepository
-                .findById(id)
-                .orElseThrow(() -> new SpaceResourceException("Space with id: " + id + " does not exist"));
+        SpaceResource resourceToDelete = getSpaceById(id);
 
         if (Objects.nonNull(resourceToDelete)) {
             spaceResourceRepository.delete(resourceToDelete);
