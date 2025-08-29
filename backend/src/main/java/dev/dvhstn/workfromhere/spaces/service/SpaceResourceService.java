@@ -3,6 +3,8 @@ package dev.dvhstn.workfromhere.spaces.service;
 import dev.dvhstn.workfromhere.spaces.exception.SpaceResourceException;
 import dev.dvhstn.workfromhere.spaces.model.SpaceResource;
 import dev.dvhstn.workfromhere.spaces.repository.SpaceResourceRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class SpaceResourceService {
         this.spaceResourceRepository = spaceResourceRepository;
     }
 
-    public List<SpaceResource> getAllSpaces() {
-        return spaceResourceRepository.findAll();
+    public Page<SpaceResource> getAllSpaces(Pageable pageable) {
+        return spaceResourceRepository.findAll(pageable);
     }
 
     public SpaceResource getSpaceById(Long id) {
