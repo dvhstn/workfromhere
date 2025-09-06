@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -46,4 +47,7 @@ public class UserResource {
     @NonNull
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "roles")
+    private Set<RoleResource> roleResources;
 }
