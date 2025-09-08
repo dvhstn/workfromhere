@@ -2,7 +2,6 @@ package dev.dvhstn.workfromhere.users.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,12 +17,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/login/", "/regesiter").permitAll()
-                        .anyRequest().permitAll()
-                )
-                .formLogin(form -> form.loginPage("/login"))
-                .httpBasic(Customizer.withDefaults())
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
+                        .requestMatchers("/login/", "/register").permitAll()
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
     }
