@@ -1,6 +1,7 @@
 package dev.dvhstn.workfromhere.exceptions;
 
 import dev.dvhstn.workfromhere.spaces.exception.SpaceResourceException;
+import dev.dvhstn.workfromhere.users.exception.RoleResourceException;
 import dev.dvhstn.workfromhere.users.exception.UserResourceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserResourceException.class)
     public ResponseEntity<String> handleUserResourceNotFoundException(UserResourceException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RoleResourceException.class)
+    public ResponseEntity<String> handleRoleResourceNotFoundException(RoleResourceException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
