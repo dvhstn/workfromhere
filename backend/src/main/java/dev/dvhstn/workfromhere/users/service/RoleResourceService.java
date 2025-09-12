@@ -1,5 +1,6 @@
 package dev.dvhstn.workfromhere.users.service;
 
+import dev.dvhstn.workfromhere.users.exception.RoleResourceException;
 import dev.dvhstn.workfromhere.users.model.RoleResource;
 import dev.dvhstn.workfromhere.users.repository.RoleResourceRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class RoleResourceService {
     }
 
     public RoleResource getRoleResourceById(@PathVariable long id) {
-        return roleResourceRepository.findById(id).orElse(null);
+        return roleResourceRepository.findById(id).orElseThrow(() -> new RoleResourceException("Role Not Found"));
     }
 
     public RoleResource getRoleResourceByName(String roleName) {
@@ -35,19 +36,14 @@ public class RoleResourceService {
     }
 
     public void updateRoleResource(RoleResource roleResource, long id) throws Exception {
-        RoleResource roleToUpdate = roleResourceRepository.findById(id).orElse(null);
-
-        // Add better error handling
-        if (Objects.isNull(roleToUpdate)) {
-            throw new Exception();
-        }
+        RoleResource roleToUpdate = getRoleResourceById(id);
 
         roleToUpdate.setName(roleResource.getName());
         roleResourceRepository.save(roleToUpdate);
     }
 
     public void deleteRoleResource(long id) {
-        RoleResource roleToDelete = roleResourceRepository.findById(id).orElse(null);
+        RoleResource roleToDelete = getRoleResourceById(id);
         if (roleToDelete != null) {
             roleResourceRepository.delete(roleToDelete);
         }
