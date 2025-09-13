@@ -6,6 +6,7 @@ import dev.dvhstn.workfromhere.users.exception.UserResourceException;
 import dev.dvhstn.workfromhere.users.model.UserResource;
 import dev.dvhstn.workfromhere.users.repository.UserResourceRepository;
 import dev.dvhstn.workfromhere.users.util.UserResourceMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,6 +48,7 @@ public class UserResourceService {
         return UserResourceMapper.toUserResponseDTO(newUser);
     }
 
+    @Transactional
     public UserResponseResource updateUserById(UUID id, UserRequestResource userRequestResource) {
         UserResource user = userResourceRepository.findByUserUUID(id);
 
@@ -61,14 +63,14 @@ public class UserResourceService {
         return UserResourceMapper.toUserResponseDTO(updatedUser);
     }
 
-    public UserResponseResource deleteUserById(UUID id) {
+    public void deleteUserById(UUID id) {
         UserResource user = userResourceRepository.findByUserUUID(id);
 
         if (user == null) {
             throw new UserResourceException("User not found");
         }
 
-        return UserResourceMapper.toUserResponseDTO(user);
+        userResourceRepository.delete(user);
     }
 
     private void updateUserDetails(UserRequestResource userRequestResource, UserResource user) {

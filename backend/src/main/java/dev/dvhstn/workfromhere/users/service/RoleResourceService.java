@@ -3,12 +3,11 @@ package dev.dvhstn.workfromhere.users.service;
 import dev.dvhstn.workfromhere.users.exception.RoleResourceException;
 import dev.dvhstn.workfromhere.users.model.RoleResource;
 import dev.dvhstn.workfromhere.users.repository.RoleResourceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.management.relation.Role;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class RoleResourceService {
@@ -35,6 +34,7 @@ public class RoleResourceService {
         return roleResourceRepository.save(roleResource);
     }
 
+    @Transactional
     public void updateRoleResource(RoleResource roleResource, long id) throws Exception {
         RoleResource roleToUpdate = getRoleResourceById(id);
 

@@ -50,7 +50,7 @@ public class UserResourceController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> updateUser(
+    public ResponseEntity<UserResponseResource> updateUser(
             @PathVariable String id, @RequestBody UserRequestResource userRequestResource) {
         userResourceService.updateUserById(UUID.fromString(id), userRequestResource);
 
