@@ -3,6 +3,7 @@ package dev.dvhstn.workfromhere.spaces.service;
 import dev.dvhstn.workfromhere.spaces.exception.SpaceResourceException;
 import dev.dvhstn.workfromhere.spaces.model.SpaceResource;
 import dev.dvhstn.workfromhere.spaces.repository.SpaceResourceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class SpaceResourceService {
         return spaceResourceRepository.save(spaceResource);
     }
 
+    @Transactional
     public void updateSpace(Long id, SpaceResource updatedResource) {
         SpaceResource resourceToUpdate = getSpaceById(id);
 
