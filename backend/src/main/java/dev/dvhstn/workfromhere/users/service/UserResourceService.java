@@ -9,7 +9,6 @@ import dev.dvhstn.workfromhere.users.util.UserResourceMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,16 +16,18 @@ import java.util.UUID;
 public class UserResourceService {
 
     private final UserResourceRepository userResourceRepository;
+    private final UserResourceMapper userResourceMapper;
 
-    public UserResourceService(UserResourceRepository userResourceRepository) {
+    public UserResourceService(UserResourceRepository userResourceRepository, UserResourceMapper userResourceMapper) {
         this.userResourceRepository = userResourceRepository;
+        this.userResourceMapper = userResourceMapper;
     }
 
     public List<UserResponseResource> getAllUsers() {
         List<UserResource> userResources = userResourceRepository.findAll();
 
          return userResources.stream()
-                .map(UserResourceMapper::toUserResponseDTO)
+                .map(userResourceMapper::toUserResponseDTO)
                 .toList();
     }
 
@@ -37,15 +38,15 @@ public class UserResourceService {
             throw new UserResourceException("User not found");
         }
 
-        return UserResourceMapper.toUserResponseDTO(user);
+        return userResourceMapper.toUserResponseDTO(user);
     }
 
     public UserResponseResource createUser(UserRequestResource userRequestResource) {
         UserResource newUser = userResourceRepository.save(
-                UserResourceMapper.toModel(userRequestResource)
+                userResourceMapper.toModel(userRequestResource)
         );
 
-        return UserResourceMapper.toUserResponseDTO(newUser);
+        return userResourceMapper.toUserResponseDTO(newUser);
     }
 
     @Transactional
@@ -56,11 +57,11 @@ public class UserResourceService {
             throw new UserResourceException("User not found");
         }
 
-        updateUserDetails(userRequestResource, user);
+        userResourceMapper.updateUserDetails(userRequestResource, user);
 
         UserResource updatedUser = userResourceRepository.save(user);
 
-        return UserResourceMapper.toUserResponseDTO(updatedUser);
+        return userResourceMapper.toUserResponseDTO(updatedUser);
     }
 
     public void deleteUserById(UUID id) {
@@ -71,13 +72,5 @@ public class UserResourceService {
         }
 
         userResourceRepository.delete(user);
-    }
-
-    private void updateUserDetails(UserRequestResource userRequestResource, UserResource user) {
-        user.setFirstName(userRequestResource.getFirstName());
-        user.setLastName(userRequestResource.getLastName());
-        user.setEmail(userRequestResource.getEmail());
-        user.setPassword(userRequestResource.getPassword());
-        user.setCreatedAt(LocalDateTime.parse(userRequestResource.getCreated_at()));
     }
 }
